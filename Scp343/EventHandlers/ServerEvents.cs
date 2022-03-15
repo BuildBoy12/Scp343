@@ -10,6 +10,7 @@ namespace Scp343.EventHandlers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using MEC;
@@ -54,19 +55,55 @@ namespace Scp343.EventHandlers
 
         private void OnEndingRound(EndingRoundEventArgs ev)
         {
+            // https://github.com/Exiled-Team/EXILED/blob/dev/Exiled.Events/Patches/Events/Server/RoundEnd.cs#L90-L129
             RoundSummary.SumInfo_ClassList classList = new RoundSummary.SumInfo_ClassList
             {
                 chaos_insurgents = ev.ClassList.chaos_insurgents,
                 class_ds = ev.ClassList.class_ds - scp343Role.TrackedPlayers.Count,
                 mtf_and_guards = ev.ClassList.mtf_and_guards,
                 scientists = ev.ClassList.scientists,
-                scps_except_zombies = ev.ClassList.scps_except_zombies,
+                scps_except_zombies = ev.ClassList.scps_except_zombies + (scp343Role.IsScp ? scp343Role.TrackedPlayers.Count : 0),
                 time = ev.ClassList.time,
                 warhead_kills = ev.ClassList.warhead_kills,
                 zombies = ev.ClassList.zombies,
             };
 
-            ev.ClassList = classList;
+            int num1 = classList.mtf_and_guards + classList.scientists;
+            int num2 = classList.chaos_insurgents + classList.class_ds;
+            int num3 = classList.scps_except_zombies + classList.zombies;
+            int num4 = classList.class_ds + RoundSummary.EscapedClassD;
+            int num5 = classList.scientists + RoundSummary.EscapedScientists;
+
+            if (ev.ClassList.class_ds == 0 && num1 == 0)
+            {
+                ev.IsRoundEnded = true;
+            }
+            else
+            {
+                int num8 = 0;
+                if (num1 > 0)
+                    num8++;
+                if (num2 > 0)
+                    num8++;
+                if (num3 > 0)
+                    num8++;
+                if (num8 <= 1)
+                    ev.IsRoundEnded = true;
+            }
+
+            if (num1 > 0)
+            {
+                if (num5 > 0)
+                    ev.LeadingTeam = LeadingTeam.FacilityForces;
+            }
+            else if (num4 > 0)
+            {
+                ev.LeadingTeam = LeadingTeam.ChaosInsurgency;
+            }
+            else if (num3 > 0)
+            {
+                ev.LeadingTeam = LeadingTeam.Anomalies;
+            }
         }
 
         private void OnRoundStarted()

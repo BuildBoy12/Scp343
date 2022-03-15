@@ -9,6 +9,7 @@ namespace Scp343
 {
     using System;
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API;
 
     /// <inheritdoc />
     public class Plugin : Plugin<Config>
@@ -18,5 +19,19 @@ namespace Scp343
 
         /// <inheritdoc/>
         public override Version RequiredExiledVersion { get; } = new Version(5, 0, 0);
+
+        /// <inheritdoc />
+        public override void OnEnabled()
+        {
+            Config.Scp343Role.Register();
+            base.OnEnabled();
+        }
+
+        /// <inheritdoc />
+        public override void OnDisabled()
+        {
+            Config.Scp343Role.Unregister();
+            base.OnDisabled();
+        }
     }
 }

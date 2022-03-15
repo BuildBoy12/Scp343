@@ -14,7 +14,7 @@ namespace Scp343.Configs
     /// </summary>
     public class Spawning
     {
-        private float spawnChance;
+        private float spawnChance = 10f;
 
         /// <summary>
         /// Gets or sets the amount of <see cref="RoleType.ClassD"/> must spawn for Scp343 to have a chance to spawn.
