@@ -120,6 +120,10 @@ namespace Scp343.EventHandlers
             });
         }
 
-        private void OnWaitingForPlayers() => scp343Role.RoundCondition.UpdateDynamicAllegiance();
+        private void OnWaitingForPlayers()
+        {
+            scp343Role.TrackedPlayers.Clear();
+            scp343Role.RoundCondition.UpdateDynamicAllegiance();
+        }
     }
 }

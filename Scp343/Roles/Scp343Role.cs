@@ -186,6 +186,8 @@ namespace Scp343.Roles
 
             if (InfiniteStamina)
                 player.IsUsingStamina = false;
+
+            base.RoleAdded(player);
         }
 
         /// <inheritdoc />
@@ -203,6 +205,7 @@ namespace Scp343.Roles
             Scp173.TurnedPlayers.Remove(player);
 
             player.IsUsingStamina = true;
+            base.RoleRemoved(player);
         }
     }
 }
