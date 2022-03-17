@@ -24,7 +24,7 @@ namespace Scp343.Configs
         /// <summary>
         /// Gets or sets the types of items that Scp343 will drop when picked up.
         /// </summary>
-        [Description("The types of items that Scp343 will drop when picked up. This has priority over the convert config.")]
+        [Description("The types of items that Scp343 will drop when picked up. This has priority over the convert config. Accepts custom item names.")]
         public HashSet<string> ToDrop { get; set; } = new HashSet<string>
         {
             $"{ItemType.Adrenaline}",
@@ -57,7 +57,7 @@ namespace Scp343.Configs
         /// <summary>
         /// Gets or sets the types of items that Scp343 will convert when picked up.
         /// </summary>
-        [Description("The types of items that Scp343 will convert when picked up.")]
+        [Description("The types of items that Scp343 will convert when picked up. Accepts custom item names.")]
         public HashSet<string> ToConvert { get; set; } = new HashSet<string>
         {
             $"{ItemType.MicroHID}",
@@ -80,7 +80,7 @@ namespace Scp343.Configs
         /// <summary>
         /// Gets or sets a list of the items an item in the <see cref="ToConvert"/> config can convert into.
         /// </summary>
-        [Description("A list of the items an item in the ToConvert config can convert into.")]
+        [Description("A list of the items an item in the ToConvert config can convert into. Accepts custom item names.")]
         public HashSet<string> ConvertedItems { get; set; } = new HashSet<string>
         {
             $"{ItemType.Flashlight}",
