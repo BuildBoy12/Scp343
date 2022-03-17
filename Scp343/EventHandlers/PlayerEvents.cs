@@ -7,6 +7,7 @@
 
 namespace Scp343.EventHandlers
 {
+    using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
     using Scp343.Roles;
     using PlayerHandlers = Exiled.Events.Handlers.Player;
@@ -29,7 +30,11 @@ namespace Scp343.EventHandlers
         /// </summary>
         public void Subscribe()
         {
+            PlayerHandlers.EnteringPocketDimension += OnEnteringPocketDimension;
+            PlayerHandlers.Hurting += OnHurting;
+            PlayerHandlers.InteractingDoor += OnInteractingDoor;
             PlayerHandlers.PickingUpItem += OnPickingUpItem;
+            PlayerHandlers.TriggeringTesla += OnTriggeringTesla;
         }
 
         /// <summary>
@@ -37,13 +42,59 @@ namespace Scp343.EventHandlers
         /// </summary>
         public void Unsubscribe()
         {
-            PlayerHandlers.PickingUpItem += OnPickingUpItem;
+            PlayerHandlers.EnteringPocketDimension -= OnEnteringPocketDimension;
+            PlayerHandlers.Hurting -= OnHurting;
+            PlayerHandlers.InteractingDoor -= OnInteractingDoor;
+            PlayerHandlers.PickingUpItem -= OnPickingUpItem;
+            PlayerHandlers.TriggeringTesla -= OnTriggeringTesla;
+        }
+
+        private void OnEnteringPocketDimension(EnteringPocketDimensionEventArgs ev)
+        {
+            if (scp343Role.Check(ev.Player))
+                ev.IsAllowed = false;
+        }
+
+        private void OnHurting(HurtingEventArgs ev)
+        {
+            if (scp343Role.Check(ev.Target) && !scp343Role.RoundCondition.IsScp)
+                ev.IsAllowed = false;
+        }
+
+        private void OnInteractingDoor(InteractingDoorEventArgs ev)
+        {
+            if (scp343Role.Check(ev.Player))
+                ev.IsAllowed = true;
         }
 
         private void OnPickingUpItem(PickingUpItemEventArgs ev)
         {
             if (!scp343Role.Check(ev.Player))
                 return;
+
+            string name = CustomItem.TryGet(ev.Pickup, out CustomItem customItem) ? customItem.Name : ev.Pickup.Type.ToString();
+            if (scp343Role.ItemHandling.ToDrop.Contains(name))
+            {
+                ev.IsAllowed = false;
+                ev.Pickup.Position = ev.Player.Position;
+                return;
+            }
+
+            if (scp343Role.ItemHandling.ToConvert.Contains(name))
+            {
+                ev.IsAllowed = false;
+                ev.Pickup.Destroy();
+                scp343Role.ItemHandling.Convert(ev.Player);
+            }
+        }
+
+        private void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
+        {
+            if (scp343Role.Check(ev.Player) && scp343Role.FacilityInteractions.TriggerTeslas)
+            {
+                ev.IsInIdleRange = false;
+                ev.IsTriggerable = false;
+            }
         }
     }
 }

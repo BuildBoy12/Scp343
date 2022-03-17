@@ -26,6 +26,7 @@ namespace Scp343.Roles
 
         private PlayerEvents playerEvents;
         private ServerEvents serverEvents;
+        private WarheadEvents warheadEvents;
 
         /// <inheritdoc />
         public override uint Id { get; set; } = 343;
@@ -70,18 +71,28 @@ namespace Scp343.Roles
 
         /// <inheritdoc />
         [YamlIgnore]
-        public override bool RemovalKillsPlayer { get; set; } = true;
+        public override bool RemovalKillsPlayer { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Scp343 should count towards the Scp team.
+        /// Gets or sets a value indicating whether Scp343 should have infinite stamina.
         /// </summary>
-        [Description("Whether Scp343 should count towards the scp team.")]
-        public bool IsScp { get; set; } = false;
+        [Description("Whether Scp343 should have infinite stamina.")]
+        public bool InfiniteStamina { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets configs related to interactions with facility objects.
+        /// </summary>
+        public FacilityInteractions FacilityInteractions { get; set; } = new FacilityInteractions();
 
         /// <summary>
         /// Gets or sets configs related to converting picked up items.
         /// </summary>
         public ItemHandling ItemHandling { get; set; } = new ItemHandling();
+
+        /// <summary>
+        /// Gets or sets configs relating to how Scp343 is considered during the round.
+        /// </summary>
+        public RoundCondition RoundCondition { get; set; } = new RoundCondition();
 
         /// <summary>
         /// Gets or sets configs related to spawning.
@@ -96,6 +107,8 @@ namespace Scp343.Roles
             playerEvents.Subscribe();
             serverEvents = new ServerEvents(this);
             serverEvents.Subscribe();
+            warheadEvents = new WarheadEvents(this);
+            warheadEvents.Subscribe();
             base.SubscribeEvents();
         }
 
@@ -106,6 +119,8 @@ namespace Scp343.Roles
             playerEvents = null;
             serverEvents.Unsubscribe();
             serverEvents = null;
+            warheadEvents.Unsubscribe();
+            warheadEvents = null;
             endConditionsCompat = null;
             base.UnsubscribeEvents();
         }
@@ -114,12 +129,15 @@ namespace Scp343.Roles
         protected override void RoleAdded(Player player)
         {
             endConditionsCompat.OnRoleAdded(player);
+            if (InfiniteStamina)
+                player.IsUsingStamina = false;
         }
 
         /// <inheritdoc />
         protected override void RoleRemoved(Player player)
         {
             endConditionsCompat.OnRoleRemoved(player);
+            player.IsUsingStamina = true;
         }
     }
 }

@@ -51,7 +51,7 @@ namespace Scp343.Compatibility
             if (!endConditionsInstalled)
                 return;
 
-            if (scp343Role.IsScp)
+            if (scp343Role.RoundCondition.IsScp)
             {
                 object cln = modifiedRolesProperty.GetValue(this, null);
                 modifiedRolesProperty.PropertyType.GetMethod("set_Item")?.Invoke(cln, new object[] { player, "Scp343" });
@@ -69,10 +69,10 @@ namespace Scp343.Compatibility
             if (!endConditionsInstalled)
                 return;
 
-            if (scp343Role.IsScp)
+            if (scp343Role.RoundCondition.IsScp)
             {
                 object cln = modifiedRolesProperty.GetValue(this, null);
-                modifiedRolesProperty.PropertyType.GetMethod("Remove")?.Invoke(cln, new object[] { player });
+                modifiedRolesProperty.PropertyType.GetMethod("Remove", new[] { typeof(Player) })?.Invoke(cln, new object[] { player });
             }
             else
             {

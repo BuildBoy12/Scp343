@@ -62,7 +62,7 @@ namespace Scp343.EventHandlers
                 class_ds = ev.ClassList.class_ds - scp343Role.TrackedPlayers.Count,
                 mtf_and_guards = ev.ClassList.mtf_and_guards,
                 scientists = ev.ClassList.scientists,
-                scps_except_zombies = ev.ClassList.scps_except_zombies + (scp343Role.IsScp ? scp343Role.TrackedPlayers.Count : 0),
+                scps_except_zombies = ev.ClassList.scps_except_zombies + (scp343Role.RoundCondition.IsScp ? scp343Role.TrackedPlayers.Count : 0),
                 time = ev.ClassList.time,
                 warhead_kills = ev.ClassList.warhead_kills,
                 zombies = ev.ClassList.zombies,
@@ -91,10 +91,9 @@ namespace Scp343.EventHandlers
                     ev.IsRoundEnded = true;
             }
 
-            if (num1 > 0)
+            if (num1 > 0 && num5 > 0)
             {
-                if (num5 > 0)
-                    ev.LeadingTeam = LeadingTeam.FacilityForces;
+                ev.LeadingTeam = LeadingTeam.FacilityForces;
             }
             else if (num4 > 0)
             {
@@ -108,6 +107,8 @@ namespace Scp343.EventHandlers
 
         private void OnRoundStarted()
         {
+            scp343Role.RoundCondition.UpdateDynamicAllegiance();
+
             Timing.CallDelayed(1f, () =>
             {
                 List<Player> classD = Player.Get(RoleType.ClassD).ToList();
