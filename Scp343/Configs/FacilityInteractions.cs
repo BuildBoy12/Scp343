@@ -17,7 +17,7 @@ namespace Scp343.Configs
         /// <summary>
         /// Gets or sets the amount of time, in seconds, before Scp343 can open any door regardless of permissions.
         /// </summary>
-        [Description("The amount of time, in seconds, before Scp343 can open any door regardless of permissions.")]
+        [Description("The amount of time, in seconds, before Scp343 can open any door regardless of permissions. Set to -1 to disable.")]
         public int OpenDoorTime { get; set; } = 300;
 
         /// <summary>

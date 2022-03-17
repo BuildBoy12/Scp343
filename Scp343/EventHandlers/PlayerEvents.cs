@@ -64,7 +64,9 @@ namespace Scp343.EventHandlers
 
         private void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
-            if (scp343Role.Check(ev.Player) && Round.ElapsedTime.TotalSeconds >= scp343Role.FacilityInteractions.OpenDoorTime)
+            if (scp343Role.FacilityInteractions.OpenDoorTime > -1 &&
+                scp343Role.Check(ev.Player) &&
+                Round.ElapsedTime.TotalSeconds >= scp343Role.FacilityInteractions.OpenDoorTime)
                 ev.IsAllowed = true;
         }
 
