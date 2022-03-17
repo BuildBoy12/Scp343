@@ -32,6 +32,7 @@ namespace Scp343.EventHandlers
         public void Subscribe()
         {
             PlayerHandlers.EnteringPocketDimension += OnEnteringPocketDimension;
+            PlayerHandlers.Escaping += OnEscaping;
             PlayerHandlers.Hurting += OnHurting;
             PlayerHandlers.InteractingDoor += OnInteractingDoor;
             PlayerHandlers.PickingUpItem += OnPickingUpItem;
@@ -44,6 +45,7 @@ namespace Scp343.EventHandlers
         public void Unsubscribe()
         {
             PlayerHandlers.EnteringPocketDimension -= OnEnteringPocketDimension;
+            PlayerHandlers.Escaping -= OnEscaping;
             PlayerHandlers.Hurting -= OnHurting;
             PlayerHandlers.InteractingDoor -= OnInteractingDoor;
             PlayerHandlers.PickingUpItem -= OnPickingUpItem;
@@ -56,9 +58,15 @@ namespace Scp343.EventHandlers
                 ev.IsAllowed = false;
         }
 
+        private void OnEscaping(EscapingEventArgs ev)
+        {
+            if (scp343Role.Check(ev.Player))
+                ev.IsAllowed = false;
+        }
+
         private void OnHurting(HurtingEventArgs ev)
         {
-            if (scp343Role.Check(ev.Target) && !scp343Role.RoundCondition.IsScp)
+            if (scp343Role.Check(ev.Target) && (!scp343Role.RoundCondition.IsScp || (ev.Attacker != null && ev.Attacker.IsScp)))
                 ev.IsAllowed = false;
         }
 

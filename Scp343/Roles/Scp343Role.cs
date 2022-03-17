@@ -10,10 +10,12 @@ namespace Scp343.Roles
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomRoles.API.Features;
+    using MEC;
     using Scp343.Compatibility;
     using Scp343.Configs;
     using Scp343.EventHandlers;
@@ -117,6 +119,12 @@ namespace Scp343.Roles
         public bool InfiniteStamina { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a multiplier used to modify the player's movement speed (running and walking).
+        /// </summary>
+        [Description("A multiplier used to modify the player's movement speed (running and walking).")]
+        public float MovementMultiplier { get; set; } = 1f;
+
+        /// <summary>
         /// Gets or sets configs related to interactions with facility objects.
         /// </summary>
         public FacilityInteractions FacilityInteractions { get; set; } = new FacilityInteractions();
@@ -165,7 +173,17 @@ namespace Scp343.Roles
         /// <inheritdoc />
         protected override void RoleAdded(Player player)
         {
+            Timing.CallDelayed(1.5f, () =>
+            {
+                player.ChangeWalkingSpeed(MovementMultiplier);
+                player.ChangeRunningSpeed(MovementMultiplier);
+            });
+
             endConditionsCompat.OnRoleAdded(player);
+
+            Scp096.TurnedPlayers.Add(player);
+            Scp173.TurnedPlayers.Add(player);
+
             if (InfiniteStamina)
                 player.IsUsingStamina = false;
         }
@@ -173,7 +191,17 @@ namespace Scp343.Roles
         /// <inheritdoc />
         protected override void RoleRemoved(Player player)
         {
+            Timing.CallDelayed(1.5f, () =>
+            {
+                player.ChangeWalkingSpeed(1f);
+                player.ChangeRunningSpeed(1f);
+            });
+
             endConditionsCompat.OnRoleRemoved(player);
+
+            Scp096.TurnedPlayers.Remove(player);
+            Scp173.TurnedPlayers.Remove(player);
+
             player.IsUsingStamina = true;
         }
     }

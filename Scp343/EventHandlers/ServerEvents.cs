@@ -76,7 +76,7 @@ namespace Scp343.EventHandlers
             int num4 = classList.class_ds + RoundSummary.EscapedClassD;
             int num5 = classList.scientists + RoundSummary.EscapedScientists;
 
-            if (ev.ClassList.class_ds == 0 && num1 == 0)
+            if (classList.class_ds == 0 && num1 == 0)
             {
                 ev.IsRoundEnded = true;
             }
@@ -105,6 +105,9 @@ namespace Scp343.EventHandlers
             {
                 ev.LeadingTeam = LeadingTeam.Anomalies;
             }
+
+            Log.Debug($"Round Ended: {ev.IsRoundEnded}");
+            Log.Debug($"Leading Team: {ev.LeadingTeam}");
         }
 
         private void OnRoundStarted()
