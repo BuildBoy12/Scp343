@@ -38,7 +38,7 @@ namespace Scp343.Roles
         public override string Name { get; set; } = "Scp-343";
 
         /// <inheritdoc/>
-        public override string Description { get; set; } = "SCP-343 is a passive immortal that wonders the facility bringing subtle anarchy to the facility.";
+        public override string Description { get; set; } = "Scp-343 is a passive immortal that wonders the facility bringing subtle anarchy to the facility.";
 
         /// <inheritdoc />
         public override string CustomInfo { get; set; } = "Scp-343";
