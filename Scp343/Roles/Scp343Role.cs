@@ -7,6 +7,7 @@
 
 namespace Scp343.Roles
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using Exiled.API.Features;
@@ -37,17 +38,29 @@ namespace Scp343.Roles
         /// <inheritdoc />
         public override string Name { get; set; } = "Scp-343";
 
-        /// <inheritdoc/>
-        public override string Description { get; set; } = "Scp-343 is a passive immortal that wonders the facility bringing subtle anarchy.";
-
-        /// <inheritdoc />
-        public override string CustomInfo { get; set; } = "Scp-343";
-
         /// <inheritdoc />
         public override List<string> Inventory { get; set; } = new List<string>
         {
             $"{ItemType.Flashlight}",
         };
+
+        /// <inheritdoc />
+        [YamlIgnore]
+        public override string Description
+        {
+            get => RoundCondition.IsScp ? ScpDescription : NoneDescription;
+            set => throw new InvalidOperationException();
+        }
+
+        /// <inheritdoc />
+        [YamlIgnore]
+        public override string CustomInfo
+        {
+            get => RoundCondition.IsScp ?
+                $"<color={Misc.AllowedColors[ScpColorType]}>{Name}</color>" :
+                $"<color={Misc.AllowedColors[NoneColorType]}>{Name}</color>";
+            set => throw new InvalidOperationException();
+        }
 
         /// <inheritdoc />
         [YamlIgnore]
@@ -72,6 +85,30 @@ namespace Scp343.Roles
         /// <inheritdoc />
         [YamlIgnore]
         public override bool RemovalKillsPlayer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description of Scp343 when they are considered to be an Scp.
+        /// </summary>
+        [Description("The description of Scp343 when they are considered to be an Scp.")]
+        public string ScpDescription { get; set; } = "Scp-343 is an immortal that wonders the facility destroying weapons to aid the Scps.";
+
+        /// <summary>
+        /// Gets or sets the description of Scp343 when they are considered to have no allegiance.
+        /// </summary>
+        [Description("The description of Scp343 when they are considered to have no allegiance.")]
+        public string NoneDescription { get; set; } = "Scp-343 is a passive immortal that wonders the facility bringing subtle anarchy.";
+
+        /// <summary>
+        /// Gets or sets the color of Scp343's custom info when they are considered to be an Scp.
+        /// </summary>
+        [Description("The color of Scp343's custom info when they are considered to be an Scp.")]
+        public Misc.PlayerInfoColorTypes ScpColorType { get; set; } = Misc.PlayerInfoColorTypes.Crimson;
+
+        /// <summary>
+        /// Gets or sets the color of Scp343's custom info when they are considered to be on no team.
+        /// </summary>
+        [Description("The color of Scp343's custom info when they are considered to be on no team.")]
+        public Misc.PlayerInfoColorTypes NoneColorType { get; set; } = Misc.PlayerInfoColorTypes.BlueGreen;
 
         /// <summary>
         /// Gets or sets a value indicating whether Scp343 should have infinite stamina.

@@ -7,6 +7,7 @@
 
 namespace Scp343.Configs
 {
+    using System.ComponentModel;
     using UnityEngine;
 
     /// <summary>
@@ -17,13 +18,15 @@ namespace Scp343.Configs
         private float spawnChance = 10f;
 
         /// <summary>
-        /// Gets or sets the amount of <see cref="RoleType.ClassD"/> must spawn for Scp343 to have a chance to spawn.
+        /// Gets or sets the amount of <see cref="RoleType.ClassD"/> that must spawn for Scp343 to have a chance to spawn.
         /// </summary>
-        public int RequiredClassD { get; set; } = 1;
+        [Description("The amount of ClassD that must spawn for Scp343 to have a chance to spawn.")]
+        public int RequiredClassD { get; set; } = 2;
 
         /// <summary>
         /// Gets or sets the chance for Scp343 to spawn in a given round.
         /// </summary>
+        [Description("The chance for Scp343 to spawn in a given round.")]
         public float SpawnChance
         {
             get => spawnChance;
