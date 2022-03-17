@@ -15,6 +15,12 @@ namespace Scp343.Configs
     public class FacilityInteractions
     {
         /// <summary>
+        /// Gets or sets the amount of time, in seconds, before Scp343 can open any door regardless of permissions.
+        /// </summary>
+        [Description("The amount of time, in seconds, before Scp343 can open any door regardless of permissions.")]
+        public int OpenDoorTime { get; set; } = 300;
+
+        /// <summary>
         /// Gets or sets a value indicating whether Scp343 can interact with the alpha warhead.
         /// </summary>
         [Description("Whether Scp343 can interact with the alpha warhead.")]

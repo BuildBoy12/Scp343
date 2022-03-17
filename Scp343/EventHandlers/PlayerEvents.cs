@@ -7,6 +7,7 @@
 
 namespace Scp343.EventHandlers
 {
+    using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
     using Scp343.Roles;
@@ -63,7 +64,7 @@ namespace Scp343.EventHandlers
 
         private void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
-            if (scp343Role.Check(ev.Player))
+            if (scp343Role.Check(ev.Player) && Round.ElapsedTime.TotalSeconds >= scp343Role.FacilityInteractions.OpenDoorTime)
                 ev.IsAllowed = true;
         }
 
@@ -90,7 +91,7 @@ namespace Scp343.EventHandlers
 
         private void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
         {
-            if (scp343Role.Check(ev.Player) && scp343Role.FacilityInteractions.TriggerTeslas)
+            if (scp343Role.Check(ev.Player) && !scp343Role.FacilityInteractions.TriggerTeslas)
             {
                 ev.IsInIdleRange = false;
                 ev.IsTriggerable = false;

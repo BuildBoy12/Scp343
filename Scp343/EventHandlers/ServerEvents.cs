@@ -42,6 +42,7 @@ namespace Scp343.EventHandlers
         {
             ServerHandlers.EndingRound += OnEndingRound;
             ServerHandlers.RoundStarted += OnRoundStarted;
+            ServerHandlers.WaitingForPlayers += OnWaitingForPlayers;
         }
 
         /// <summary>
@@ -51,6 +52,7 @@ namespace Scp343.EventHandlers
         {
             ServerHandlers.EndingRound -= OnEndingRound;
             ServerHandlers.RoundStarted -= OnRoundStarted;
+            ServerHandlers.WaitingForPlayers -= OnWaitingForPlayers;
         }
 
         private void OnEndingRound(EndingRoundEventArgs ev)
@@ -107,8 +109,6 @@ namespace Scp343.EventHandlers
 
         private void OnRoundStarted()
         {
-            scp343Role.RoundCondition.UpdateDynamicAllegiance();
-
             Timing.CallDelayed(1f, () =>
             {
                 List<Player> classD = Player.Get(RoleType.ClassD).ToList();
@@ -119,5 +119,7 @@ namespace Scp343.EventHandlers
                 scp343Role.AddRole(selectedPlayer);
             });
         }
+
+        private void OnWaitingForPlayers() => scp343Role.RoundCondition.UpdateDynamicAllegiance();
     }
 }

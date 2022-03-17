@@ -31,6 +31,7 @@ namespace Scp343.EventHandlers
         {
             WarheadHandlers.ChangingLeverStatus += OnChangingLeverStatus;
             WarheadHandlers.Starting += OnStarting;
+            WarheadHandlers.Stopping += OnStopping;
         }
 
         /// <summary>
@@ -40,6 +41,7 @@ namespace Scp343.EventHandlers
         {
             WarheadHandlers.ChangingLeverStatus -= OnChangingLeverStatus;
             WarheadHandlers.Starting -= OnStarting;
+            WarheadHandlers.Stopping -= OnStopping;
         }
 
         private void OnChangingLeverStatus(ChangingLeverStatusEventArgs ev)
@@ -49,6 +51,12 @@ namespace Scp343.EventHandlers
         }
 
         private void OnStarting(StartingEventArgs ev)
+        {
+            if (ev.Player != null && scp343Role.Check(ev.Player) && !scp343Role.FacilityInteractions.NukeInteract)
+                ev.IsAllowed = false;
+        }
+
+        private void OnStopping(StoppingEventArgs ev)
         {
             if (ev.Player != null && scp343Role.Check(ev.Player) && !scp343Role.FacilityInteractions.NukeInteract)
                 ev.IsAllowed = false;

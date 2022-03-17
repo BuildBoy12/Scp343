@@ -8,6 +8,7 @@
 namespace Scp343.Configs
 {
     using System.ComponentModel;
+    using Exiled.API.Features;
     using Scp343.Enums;
     using YamlDotNet.Serialization;
 
@@ -34,6 +35,6 @@ namespace Scp343.Configs
         /// <summary>
         /// Updates the allegiance that the dynamic setting should inherit.
         /// </summary>
-        public void UpdateDynamicAllegiance() => isScp = Exiled.Loader.Loader.Random.Next(1) == 0;
+        public void UpdateDynamicAllegiance() => isScp = Exiled.Loader.Loader.Random.Next(2) == 0;
     }
 }

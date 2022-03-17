@@ -9,6 +9,7 @@ namespace Scp343.Configs
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
@@ -23,6 +24,7 @@ namespace Scp343.Configs
         /// <summary>
         /// Gets or sets the types of items that Scp343 will drop when picked up.
         /// </summary>
+        [Description("The types of items that Scp343 will drop when picked up. This has priority over the convert config.")]
         public HashSet<string> ToDrop { get; set; } = new HashSet<string>
         {
             $"{ItemType.Adrenaline}",
@@ -55,6 +57,7 @@ namespace Scp343.Configs
         /// <summary>
         /// Gets or sets the types of items that Scp343 will convert when picked up.
         /// </summary>
+        [Description("The types of items that Scp343 will convert when picked up.")]
         public HashSet<string> ToConvert { get; set; } = new HashSet<string>
         {
             $"{ItemType.MicroHID}",
@@ -77,6 +80,7 @@ namespace Scp343.Configs
         /// <summary>
         /// Gets or sets a list of the items an item in the <see cref="ToConvert"/> config can convert into.
         /// </summary>
+        [Description("A list of the items an item in the ToConvert config can convert into.")]
         public HashSet<string> ConvertedItems { get; set; } = new HashSet<string>
         {
             $"{ItemType.Flashlight}",
@@ -85,6 +89,7 @@ namespace Scp343.Configs
         /// <summary>
         /// Gets or sets a collection of ammo types and the amount to add to a Scp343 if the item is converted into ammo.
         /// </summary>
+        [Description("A collection of ammo types and the amount to add to a Scp343 if the item is converted into ammo.")]
         public Dictionary<AmmoType, ushort> AmountToAdd { get; set; } = new Dictionary<AmmoType, ushort>
         {
             { AmmoType.Nato9, 50 },
@@ -95,7 +100,7 @@ namespace Scp343.Configs
         };
 
         /// <summary>
-        /// Converts an item and adds it to the player's inventory.
+        /// Adds a converted item to a player's inventory.
         /// </summary>
         /// <param name="player">The player to add the converted item to.</param>
         public void Convert(Player player)
