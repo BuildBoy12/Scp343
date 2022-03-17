@@ -8,7 +8,6 @@
 namespace Scp343.Configs
 {
     using System.ComponentModel;
-    using Exiled.API.Features;
     using Scp343.Enums;
     using YamlDotNet.Serialization;
 
