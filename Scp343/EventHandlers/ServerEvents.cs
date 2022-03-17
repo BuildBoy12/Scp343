@@ -105,9 +105,6 @@ namespace Scp343.EventHandlers
             {
                 ev.LeadingTeam = LeadingTeam.Anomalies;
             }
-
-            Log.Debug($"Round Ended: {ev.IsRoundEnded}");
-            Log.Debug($"Leading Team: {ev.LeadingTeam}");
         }
 
         private void OnRoundStarted()
